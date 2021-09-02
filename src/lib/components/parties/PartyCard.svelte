@@ -1,15 +1,21 @@
 <script lang="ts">
+    import StatusTag from "$lib/components/common/StatusTag.svelte"
+
     export let party
 </script>
 
 <div class="card">
+    <div class="row">
+        <StatusTag status={"public"} />
+    </div>
+
     <div class="nft-display">
         <img src="/images/logo.png" alt="" />
     </div>
 
     <div class="details">
         <h3>Andrew Yang</h3>
-        <p>Crypto Punks</p>
+        <p class="collection">Crypto Punks</p>
 
         <div class="row">
             <div class="column">
@@ -53,10 +59,17 @@
     .details {
         h3 {
             color: black;
+            font-weight: 600;
         }
 
         p {
             color: gray;
+        }
+
+        .collection {
+            margin-top: -8px;
+            text-transform: uppercase;
+            font-size: smaller;
         }
     }
 
