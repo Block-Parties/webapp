@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-    export const ssr = false
-
     // parse query params before loading page
     export function load({ page }) {
         const params = {
@@ -16,66 +14,86 @@
 </script>
 
 <script lang="ts">
-    import OpenSeaHelper from "$lib/api/opensea_helper"
+    import BlockPartiesApi from "$lib/api/block_parties_api"
     import WalletHelper from "$lib/api/wallet_helper"
     import type { Asset } from "opensea-js/lib/types"
+    import EthAmount from "$lib/components/common/EthAmount.svelte"
+    import NftDisplay from "$lib/components/common/NftDisplay.svelte"
+    import { ethers, utils } from "ethers"
 
     import { onMount } from "svelte"
     import { Network } from "wyvern-js/lib/types"
-    //   import { OpenSeaAPI, OpenSeaPort, Network } from 'opensea-js'
-    //   import OpenSeaHelper from '$lib/api/opensea_helper'
+    import PartyCard from "$lib/components/parties/PartyCard.svelte"
+    import PartyPopup from "$lib/components/parties/PartyPopup.svelte"
+    import SharePartyPopup from "$lib/components/parties/SharePartyPopup.svelte"
 
     export let params
 
     let asset: Promise<Asset> = new Promise(() => {})
-    // let
-
-    let opensea
+    let awaitingConfirmation = false
 
     onMount(async () => {
-        const helper = (await import("$lib/api/opensea_helper")).default
-        asset = helper.getOrders(Network.Rinkeby, params.tokenAddress, params.tokenId)
+        const opensea = (await import("$lib/api/opensea_helper")).default
+        asset = opensea.getOrders(Network.Rinkeby, params.tokenAddress, params.tokenId)
     })
+
+    async function createParty() {
+        const a = await asset
+        // TODO: Error checking for assets with no open sell orders
+        a.host = await WalletHelper.getAccount()
+        a.buyPrice = a.orders[0].currentPrice
+        a.resalePrice = "" + params.resalePrice * 10.0 ** 18 // TODO: ideally this would be made consistent on the extension side in an update
+        console.log(a)
+
+        awaitingConfirmation = true
+        const newParty = await BlockPartiesApi.createParty(a)
+        asset.id = newParty.id
+    }
+
+    let hidePopup = false
+    function closePopup() {
+        hidePopup = true
+    }
 </script>
+
+{#if !hidePopup && asset.id != null}
+    <SharePartyPopup party={asset} on:close={closePopup} />
+{/if}
+
+<!-- TODO: show popup on create party -->
 
 <div class="page">
     {#await asset then asset}
-        <div class="nft-container">
-            <img src={asset.imageUrl} alt="" />
-
-            <img class="marketplace-logo" src="/images/marketplace/opensea_logo.png" alt="opensea" />
-        </div>
+        <NftDisplay imageUrl={asset.imageUrl} />
 
         <div class="details">
             <h2>{asset.name}</h2>
             <h5>{asset.assetContract.name}</h5>
 
-            <button>Set it live!</button>
+            <button on:click={createParty}>Set it live!</button>
 
             <div class="row">
                 <div class="column">
                     <p class="label">Host</p>
                     {#await WalletHelper.getAccount()}
-                        <p>Please connect your wallet</p>
+                        <p class="host">Please connect your wallet</p>
                     {:then account}
-                        <p>{account}</p>
+                        <p class="host">{account.substring(0, 10)}</p>
                     {/await}
                 </div>
 
                 <div class="column">
                     <p class="label">Initial Price</p>
-                    <div class="eth-amount">
-                        <img src="/images/coins/ethereum.png" alt="" />
-                        <p>2</p>
-                    </div>
+                    <EthAmount
+                        amount={ethers.utils.formatEther(
+                            ethers.BigNumber.from(asset.orders[0].currentPrice.toString())
+                        )}
+                    />
                 </div>
 
                 <div class="column">
                     <p class="label">Resale Price</p>
-                    <div class="eth-amount">
-                        <img src="/images/coins/ethereum.png" alt="" />
-                        <p>2</p>
-                    </div>
+                    <EthAmount amount={params.resalePrice} />
                 </div>
             </div>
 
@@ -93,39 +111,9 @@
         display: flex;
     }
 
-    .nft-container {
-        flex: 1;
-        margin-right: 32px;
-        align-items: center;
-        justify-content: center;
-
-        position: relative;
-        background: #f2f2f2;
-        border-radius: 24px;
-
-        padding: 56px;
-
-        img {
-            object-fit: contain;
-            object-position: center;
-            margin: auto;
-            width: 100%;
-            height: 100%;
-        }
-
-        .marketplace-logo {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-
-            width: 40px;
-            height: 40px;
-        }
-    }
-
     .details {
         flex: 1;
-        margin-left: 32px;
+        margin-left: 48px;
 
         h2 {
             color: black;
@@ -135,7 +123,7 @@
 
         h5 {
             color: #828282;
-            font-weight: 300;
+            font-weight: 400;
             text-transform: uppercase;
 
             margin: 0;
@@ -161,6 +149,7 @@
         .row {
             display: flex;
             justify-content: space-between;
+            align-items: stretch;
             margin-top: 32px;
         }
 
@@ -170,29 +159,16 @@
                 font-size: smaller;
                 font-weight: 600;
             }
+            .host {
+                color: #333333;
+                font-weight: 600;
+                margin: 0;
+            }
 
             .body {
                 color: #828282;
                 font-size: smaller;
                 font-weight: 300;
-            }
-        }
-
-        .eth-amount {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            img {
-                width: 24px;
-                height: 24px;
-                margin-right: 12px;
-            }
-
-            p {
-                color: #333333;
-                font-weight: 600;
-                margin: 0;
             }
         }
     }

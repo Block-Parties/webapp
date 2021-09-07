@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="/main.css" />
-		%svelte.head%
-	</head>
-	<body>
-		<div id="svelte">%svelte.body%</div>
-	</body>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="/favicon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="/main.css" />
+
+        <!-- Open Graph Tags -->
+        <meta property="og:url" content="https://blockparties.io" />
+        <meta property="og:title" content="Block Parties" />
+        <meta property="og:description" content="Fractionalizing Web3" />
+        <meta property="og:image" content="https://localhost:3001/images/logo.png" />
+
+        %svelte.head%
+    </head>
+    <body>
+        <div id="svelte">%svelte.body%</div>
+    </body>
 </html>

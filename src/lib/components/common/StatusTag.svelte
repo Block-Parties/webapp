@@ -3,13 +3,15 @@
 
     function getColor() {
         switch (status) {
-            case "public": return "#EBF9F9"
+            case "public":
+                return "#EBF9F9"
         }
     }
 
     function getTextColor() {
         switch (status) {
-            case "public": return "#49ABAB"
+            case "public":
+                return "#49ABAB"
         }
     }
 </script>
@@ -18,9 +20,9 @@
     <p style="color: {getTextColor()}">{status}</p>
 </div>
 
-
 <style lang="scss">
     div {
+        width: fit-content;
         padding: 8px;
         border-radius: 4px;
     }

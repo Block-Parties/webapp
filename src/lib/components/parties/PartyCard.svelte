@@ -1,44 +1,55 @@
 <script lang="ts">
     import StatusTag from "$lib/components/common/StatusTag.svelte"
+    import ProgressBar from "$lib/components/common/ProgressBar.svelte"
+    import NftDisplay from "$lib/components/common/NftDisplay.svelte"
+    import EthAmount from "$lib/components/common/EthAmount.svelte"
+    import { ethers } from "ethers"
 
     export let party
 </script>
 
-<div class="card">
+<div class="card" on:click>
     <div class="row">
         <StatusTag status={"public"} />
     </div>
 
-    <div class="nft-display">
-        <img src="/images/logo.png" alt="" />
-    </div>
+    <NftDisplay imageUrl={party.imageUrl} />
 
     <div class="details">
-        <h3>Andrew Yang</h3>
-        <p class="collection">Crypto Punks</p>
+        <h3>{party.name}</h3>
+        <p class="collection">{party.collection}</p>
 
         <div class="row">
             <div class="column">
                 <p class="label">Initial Price</p>
-                <div class="eth-amount">
-                    <img src="/images/coins/ethereum.png" alt="" />
-                    <p>2</p>
-                </div>
+                <EthAmount amount={ethers.utils.formatEther(party.buyPrice)} />
             </div>
 
             <div class="column">
                 <p class="label">Resale Price</p>
-                <div class="eth-amount">
-                    <img src="/images/coins/ethereum.png" alt="" />
-                    <p>2</p>
-                </div>
+                <EthAmount amount={ethers.utils.formatEther(party.resalePrice)} />
             </div>
         </div>
     </div>
+
+    <!-- TODO -->
+    <ProgressBar percentage={party.progress} />
 </div>
 
 <style lang="scss">
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
     .card {
+        cursor: pointer;
+        transition: all 0.3s;
+
+        width: 320px;
+        margin: 16px;
+
         box-sizing: border-box;
         border-radius: 10px;
         border: 1px solid #e0e0e0;
@@ -47,16 +58,15 @@
         h3 {
             color: black;
         }
-    }
 
-    .nft-display {
-        background: #f2f2f2;
-        border-radius: 10px;
-        margin: 16px 0;
-        padding: 32px;
+        &:hover {
+            box-shadow: 0px 0px 3px 1px #e0e0e0aa;
+        }
     }
 
     .details {
+        margin-bottom: 16px;
+
         h3 {
             color: black;
             font-weight: 600;
@@ -73,11 +83,6 @@
         }
     }
 
-    .row {
-        display: flex;
-        justify-content: space-between;
-    }
-
     .column {
         .label {
             color: #4f4f4f;
@@ -89,24 +94,6 @@
             color: #828282;
             font-size: smaller;
             font-weight: 300;
-        }
-    }
-
-    .eth-amount {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        img {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
-        }
-
-        p {
-            color: #333333;
-            font-weight: 600;
-            margin: 0;
         }
     }
 </style>

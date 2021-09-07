@@ -11,9 +11,20 @@ module WalletHelper {
         return _provider
     }
 
+    export async function isConnected(): Promise<boolean> {
+        const account = await getAccount()
+        if (account == null) {
+            alert("No wallet connected. Please install MetaMask to proceed")
+            // TODO: Use proper metamask onboarding
+            return false
+        }
+
+        return true
+    }
+
     export async function connect() {
         const provider = await getProvider()
-        provider
+        return provider
             .request({ method: 'eth_requestAccounts' })
             .then((accts) => {
                 accounts = accts
