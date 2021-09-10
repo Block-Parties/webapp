@@ -4,7 +4,7 @@ import BlockPartiesAbi from "./blockparties_abi"
 
 module BlockParties {
 
-    export const RINKEBY_ADDRESS = "0x64F692aF00Cc1B4C9fb2501DAA8Dd5cd7cFBda5e"
+    export const RINKEBY_ADDRESS = "0xe9CFe13203364f5d842b5308beF0900424FB3cd6"
 
     let contract: ethers.Contract
     let signer: ethers.Signer

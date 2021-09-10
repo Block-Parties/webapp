@@ -93,8 +93,8 @@
             flex: 1.5;
             display: flex;
             justify-content: right;
-            margin-top: 16px;
-            margin-left: 64px; // TODO
+            // margin-top: 16px;
+            // margin-left: 64px; // TODO
             min-width: 300px;
 
             // ju-self: flex-end;

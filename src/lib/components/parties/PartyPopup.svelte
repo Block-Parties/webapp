@@ -32,7 +32,7 @@
                 if (party.progress < 1) {
                     state = "invest"
                 } else {
-                    state = "filled"
+                    state = "buy"
 
                     // alert("ASASD")
                     // awaiting = true

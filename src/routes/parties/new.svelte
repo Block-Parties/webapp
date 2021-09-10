@@ -22,7 +22,7 @@
     import { ethers, utils } from "ethers"
 
     import { onMount } from "svelte"
-    import { Network } from "wyvern-js/lib/types"
+    // import { Network } from "wyvern-js/lib/types"
     import PartyCard from "$lib/components/parties/PartyCard.svelte"
     import PartyPopup from "$lib/components/parties/PartyPopup.svelte"
     import SharePartyPopup from "$lib/components/parties/SharePartyPopup.svelte"
@@ -34,7 +34,7 @@
 
     onMount(async () => {
         const opensea = (await import("$lib/api/opensea_helper")).default
-        asset = opensea.getOrders(Network.Rinkeby, params.tokenAddress, params.tokenId)
+        asset = opensea.getOrders("rinkeby", params.tokenAddress, params.tokenId)
     })
 
     async function createParty() {
