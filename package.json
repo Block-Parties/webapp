@@ -27,7 +27,7 @@
     "type": "module",
     "dependencies": {
         "@metamask/detect-provider": "^1.2.0",
-        "@sveltejs/adapter-vercel": "^1.0.0-next.0",
+        "@sveltejs/adapter-vercel": "^1.0.0-next.28",
         "ethers": "^5.4.6",
         "opensea-js": "^1.1.11",
         "process": "^0.11.10",
