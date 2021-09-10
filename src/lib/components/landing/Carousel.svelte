@@ -1,9 +1,13 @@
 <script lang="ts">
     let activeIndex = 0
 
-    function showNext() {}
+    function showNext() {
+        activeIndex = (activeIndex + 1) % 3
+    }
 
-    function showPrev() {}
+    function showPrev() {
+        activeIndex = (activeIndex - 1) % 3
+    }
 </script>
 
 <div class="outer">
@@ -15,7 +19,7 @@
         <slot />
     </div>
 
-    <div class="arrow" on:click={showPrev}>
+    <div class="arrow" on:click={showNext}>
         <img src="/images/arrow_right.svg" alt="previous" />
     </div>
 </div>
