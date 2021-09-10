@@ -1,8 +1,11 @@
 <script lang="ts">
     export let imageUrl: string
+
+    export let width: string = ""
+    export let height: string = ""
 </script>
 
-<div>
+<div style="width: {width}; height: {height};">
     <img src={imageUrl} alt="" />
 
     <!-- TODO: Eventually we'll want to support more than just OpenSea -->

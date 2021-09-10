@@ -68,7 +68,7 @@ module BlockPartiesApi {
         const parties = await response.json()
 
         for (let i = 0; i < parties.length; i++) {
-            parties[i].progress = await BlockParties.getProgress(parties[i])
+            // parties[i].progress = await BlockParties.getProgress(parties[i])
             parties[i].state = await WyvernExchangeHost.getState(parties[i].id)
             console.log(parties[i])
         }

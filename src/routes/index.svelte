@@ -33,6 +33,20 @@
             </div>
             <img src="images/how_it_works/browse.png" alt="" />
         </div>
+        <div class="carousel-item">
+            <div class="description">
+                <h2>Invest</h2>
+                <p>Once your party's been made, share it with friends and invest!</p>
+            </div>
+            <img src="images/how_it_works/invest.png" alt="" />
+        </div>
+        <div class="carousel-item">
+            <div class="description">
+                <h2>Resell</h2>
+                <p>When enough funds are pooled to buy it, we'll buy and relist it. When it's sold, you profit!</p>
+            </div>
+            <img src="images/how_it_works/resell.png" alt="" />
+        </div>
     </Carousel>
 
     <img class="clump1" src="images/clumps/clump_2.png" alt="" />
@@ -137,6 +151,10 @@
                 font-weight: 300;
                 color: #170d4d;
                 line-height: 1.5;
+            }
+
+            img {
+                margin-left: 32px;
             }
         }
 

@@ -13,6 +13,10 @@
             <a href="/TODO">How it works</a>
             <a href="/browse">Browse</a>
             <a href="/my-parties">My parties</a>
+            <a
+                href="https://docs.google.com/document/d/1UOgaAIzwfo8SDsIILwCaxCa9q5joLuaeXKH1Vnf5xRw/edit"
+                target="_blank">Lite Paper</a
+            >
         </div>
 
         <div class="column">
@@ -28,8 +32,10 @@
         </div>
 
         <div class="email-input">
-            <input placeholder="Put your email here..." />
-            <button>Join the party!</button>
+            <div>
+                <input placeholder="Put your email here..." />
+                <button>Join the party!</button>
+            </div>
         </div>
     </div>
 </footer>
@@ -92,12 +98,11 @@
         .email-input {
             flex: 1.5;
             display: flex;
-            justify-content: right;
-            // margin-top: 16px;
-            // margin-left: 64px; // TODO
-            min-width: 300px;
 
-            // ju-self: flex-end;
+            div {
+                margin: 8px 0 0 auto;
+                min-width: 300px;
+            }
 
             input {
                 height: 40px;

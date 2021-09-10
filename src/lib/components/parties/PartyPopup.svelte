@@ -13,6 +13,7 @@
     // import { OpenSeaPort } from "opensea-js"
     import OpenSeaHelper from "$lib/api/opensea_helper"
     import WyvernExchangeHost from "$lib/contracts/wyvern_exchange_host"
+    import LoadingButton from "../common/LoadingButton.svelte"
 
     export let party
 
@@ -69,7 +70,8 @@
     async function invest() {
         if (state == "awaiting") return
 
-        state = "awaiting"
+        // state = "awaiting"
+        awaiting = true
         await BlockParties.deposit(party.id, ethers.utils.parseEther(investmentAmount))
         state = "post-investment"
     }
@@ -77,22 +79,22 @@
     async function buy() {
         if (state == "awaiting") return
 
-        state = "awaiting"
+        // state = "awaiting"
         awaiting = true
         console.log("DO THE THING")
         await WyvernExchangeHost.buy(party)
-        // TODO: BUY NFT
+        awaiting = false
         state = "post-investment "
     }
 
     async function sell() {
         if (state == "awaiting") return
 
-        state = "awaiting"
+        // state = "awaiting"
         awaiting = true
         console.log("DO THE SELL")
         await WyvernExchangeHost.sell(party)
-        // TODO: BUY NFT
+        awaiting = false
         state = "post-investment "
     }
 </script>
@@ -130,10 +132,13 @@
                         <!-- </button> -->
                     {:else if state == "buy"}
                         <p>This party is full, click to buy the NFT!</p>
-                        <button class="buy" on:click={buy}>Buy!</button>
+                        <!-- <button class="buy" on:click={buy}>Buy!</button> -->
+                        <LoadingButton on:click={buy} loading={awaiting}>Buy!</LoadingButton>
                     {:else if state == "relist"}
                         <p>This NFT has been bought! Click to list it for resale!</p>
-                        <button class="buy" on:click={sell}>Sell!</button>
+                        <LoadingButton on:click={sell} loading={awaiting}>Sell!</LoadingButton>
+
+                        <!-- <button class="buy" on:click={sell}>Sell!</button> -->
                     {/if}
                 </div>
 

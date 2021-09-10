@@ -1,7 +1,9 @@
-<script>
+<script lang="ts">
     import Popup from "../common/Popup.svelte"
 
     export let party
+    export let title: string = "Congrats on joining a party!"
+    export let body: string = "Share your party on social media to get it funded faster!"
 
     async function tweet() {
         open(
@@ -22,8 +24,8 @@
     <div class="content">
         <!-- <img class="background" src="/images/clumps/clump_5.png" alt="" /> -->
 
-        <h3>Congrats on joining a party!</h3>
-        <p>Your deposit went through! Why not share your party on social media to get it funded faster?</p>
+        <h3>{title}</h3>
+        <p>{body}</p>
 
         <div class="socials">
             <div class="circle" on:click={tweet}>

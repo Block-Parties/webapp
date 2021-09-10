@@ -22,10 +22,8 @@
     import { ethers, utils } from "ethers"
 
     import { onMount } from "svelte"
-    // import { Network } from "wyvern-js/lib/types"
-    import PartyCard from "$lib/components/parties/PartyCard.svelte"
-    import PartyPopup from "$lib/components/parties/PartyPopup.svelte"
     import SharePartyPopup from "$lib/components/parties/SharePartyPopup.svelte"
+    import LoadingButton from "$lib/components/common/LoadingButton.svelte"
 
     export let params
 
@@ -37,17 +35,18 @@
         asset = opensea.getOrders("rinkeby", params.tokenAddress, params.tokenId)
     })
 
-    async function createParty() {
+    async function createParty() { 
         const a = await asset
         // TODO: Error checking for assets with no open sell orders
         a.host = await WalletHelper.getAccount()
         a.buyPrice = a.orders[0].currentPrice
-        a.resalePrice = "" + params.resalePrice * 10.0 ** 18 // TODO: ideally this would be made consistent on the extension side in an update
+        a.resalePrice = ethers.utils.parseEther(params.resalePrice) // TODO: ideally this would be made consistent on the extension side in an update
         console.log(a)
 
         awaitingConfirmation = true
         const newParty = await BlockPartiesApi.createParty(a)
         asset.id = newParty.id
+        awaitingConfirmation = false
     }
 
     let hidePopup = false
@@ -57,10 +56,8 @@
 </script>
 
 {#if !hidePopup && asset.id != null}
-    <SharePartyPopup party={asset} on:close={closePopup} />
+    <SharePartyPopup party={asset} on:close={closePopup} title={"Congrats on the new Party!"} />
 {/if}
-
-<!-- TODO: show popup on create party -->
 
 <div class="page">
     {#await asset then asset}
@@ -70,7 +67,7 @@
             <h2>{asset.name}</h2>
             <h5>{asset.assetContract.name}</h5>
 
-            <button on:click={createParty}>Set it live!</button>
+            <LoadingButton on:click={createParty} loading={awaitingConfirmation}>Set it live!</LoadingButton>
 
             <div class="row">
                 <div class="column">
@@ -127,6 +124,7 @@
             text-transform: uppercase;
 
             margin: 0;
+            margin-bottom: 32px;
         }
 
         button {

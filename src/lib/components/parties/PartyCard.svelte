@@ -13,7 +13,7 @@
         <StatusTag status={"public"} />
     </div>
 
-    <NftDisplay imageUrl={party.imageUrl} />
+    <NftDisplay imageUrl={party.imageUrl} height={"200px"} />
 
     <div class="details">
         <h3>{party.name}</h3>
@@ -37,13 +37,10 @@
 </div>
 
 <style lang="scss">
-    .row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
     .card {
+        flex: 1;
+        min-width: 320px;
+
         cursor: pointer;
         transition: all 0.3s;
 
@@ -81,6 +78,12 @@
             text-transform: uppercase;
             font-size: smaller;
         }
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
     }
 
     .column {
